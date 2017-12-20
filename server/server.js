@@ -46,7 +46,7 @@ io.on('connection', (socket)=> {
         text : "Welcome to our chat room - nice to see you here",
         cretedAt: new Date().getTime()
     })*/
-    socket.emit('newMessage', generateMessage('Admin','Welcome to the chat app'))
+    socket.emit('newMessage', generateMessage('Admin - server','Welcome to the chat app'))
 
     //socket.broadcast.emit from Admin text: new user joined - send message to other users
     /*socket.broadcast.emit('newMessage', {
@@ -54,15 +54,16 @@ io.on('connection', (socket)=> {
         text: "we have a new user here",
         cretedAt: new Date().getTime()
     })*/
-    socket.broadcast.emit('newMessage', generateMessage('Admin', 'A new user has joined the group'))
+    socket.broadcast.emit('newMessage', generateMessage('Admin - server', 'A new user has joined the group'))
 
 
 
-    socket.on('createMessage', (message) => {
+    socket.on('createMessage', (message, callback) => {
         console.log('createMessage', message)
         //emits event to all connected users
         
         io.emit('newMessage',generateMessage(message.from, message.text))
+        callback('This is from the server!')
         
         //broadcasting - sending message to all but this socket!
         /*

@@ -30,6 +30,7 @@ io.on('connection', (socket)=> {
     */
 
     /*
+    socket.emit -  only to the one user
     socket.emit('newMessage', {
         from:"admin guy",
         text:"welcome",
@@ -37,16 +38,41 @@ io.on('connection', (socket)=> {
     })
     */
 
+    // socket.emit from Admin - - welcome to the chat app - sending message to specific/one user
+    socket.emit('newMessage', {
+        from :"Admin",
+        text : "Welcome to our chat room - nice to see you here",
+        cretedAt: new Date().getTime()
+    })
+
+    //socket.broadcast.emit from Admin text: new user joined - send message to other users
+    socket.broadcast.emit('newMessage', {
+        from:"Admin",
+        text: "we have a new user here",
+        cretedAt: new Date().getTime()
+    })
+
+
+
     socket.on('createMessage', (message) => {
         console.log('createMessage', message)
         //emits event to all connected users
+        
         io.emit('newMessage', {
             from:message.from,
             text:message.text,
             createdAt: new Date().getTime()
         })
+        
+        //broadcasting - sending message to all but this socket!
+        /*
+        socket.broadcast.emit('newMessage', {
+            from:message.from,
+            text:message.text,
+            createdAt: new Date().getTime()
+        })
+        */
     })
-
 
     socket.on('disconnect',()=>{
         console.log('User was disconnected!')

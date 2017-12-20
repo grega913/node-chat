@@ -11,10 +11,12 @@ socket.on('connect', function() {
     })
     */
 
+    /*
     socket.emit('createMessage', {
         from:'Janko the client',
         text:'I am just sending this to say hello!!'
     })
+    */
     
 })
 
